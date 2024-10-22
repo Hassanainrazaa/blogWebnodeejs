@@ -9,11 +9,8 @@
             body {
                 font-family: 'Courier New', Courier, monospace;
                 background-color: #121212;
-                /* Dark background */
                 color: #fff;
-                /* White text for contrast */
                 overflow-x: hidden;
-                /* Prevent horizontal scrolling */
             }
 
             .card-container {
@@ -24,30 +21,24 @@
             .card {
                 position: relative;
                 width: 400px;
-                /* Fixed width for uniformity */
                 height: 400px;
-                /* Fixed height for uniformity */
                 overflow: hidden;
                 border-radius: 15px;
                 box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
                 transition: transform 0.3s ease;
                 background-color: rgba(255, 255, 255, 0.1);
-                /* Slightly transparent background */
             }
 
             .card img {
                 width: 100%;
                 height: 100%;
-                /* Ensure image takes full height */
                 object-fit: cover;
-                /* Maintain aspect ratio */
                 transition: transform 0.3s ease;
             }
 
             .caption {
                 position: absolute;
                 bottom: -100%;
-                /* Start hidden below the card */
                 left: 0;
                 right: 0;
                 background-color: rgba(0, 0, 0, 0.7);
@@ -60,44 +51,34 @@
 
             .card:hover {
                 transform: translateY(-10px) scale(1.05);
-                /* Lift and scale on hover */
                 box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
-                /* Deeper shadow on hover */
             }
 
             .card:hover img {
                 transform: scale(1.1);
-                /* Scale the image on hover */
             }
 
             .card:hover .caption {
                 bottom: 0;
-                /* Slide caption up */
             }
 
             .carousel-item {
                 display: flex;
                 justify-content: center;
-                /* Center cards within the carousel */
                 padding: 20px;
-                /* Padding around the cards */
             }
 
-            /* Add an animation effect for the entire carousel */
             .carousel {
                 animation: fadeIn 0.5s ease;
-                /* Fade-in effect for the carousel */
             }
 
             @keyframes fadeIn {
                 from {
                     opacity: 0;
-                    /* Start transparent */
                 }
 
                 to {
                     opacity: 1;
-                    /* End fully visible */
                 }
             }
         </style>
@@ -107,6 +88,7 @@
     <%- include("partials/navbar.ejs") %>
         <%- include("partials/profilefield.ejs") %>
 
+            <!-- Blog Section -->
             <h1 class="text-center"
                 style="font-family: 'Roboto', sans-serif; font-weight: 700; color: #fff; margin-bottom: 30px;">
                 My Daily BLOGS
@@ -148,6 +130,53 @@
                     <span class="visually-hidden">Previous</span>
                 </button>
                 <button class="carousel-control-next" type="button" data-bs-target="#blogCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+
+            <!-- Projects Section -->
+            <h1 class="text-center"
+                style="font-family: 'Roboto', sans-serif; font-weight: 700; color: #fff; margin-top: 50px; margin-bottom: 30px;">
+                My Projects
+            </h1>
+
+            <div id="projectCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
+                <div class="carousel-inner">
+                    <% let isProjectActive=true; %>
+                        <% for (let i=0; i < projects.length; i +=3) { %>
+                            <div class="carousel-item <%= isProjectActive ? 'active' : '' %>">
+                                <div class="d-flex justify-content-center">
+                                    <% for (let j=0; j < 3 && i + j < projects.length; j++) { %>
+                                        <div class="card-container mx-3">
+                                            <div class="card" style="width: 350px; height: 350px;">
+                                                <img src="<%= projects[i + j].projectImage1 %>" class="card-img-top"
+                                                    alt="Project image">
+                                                <div class="caption">
+                                                    <h5 class="card-title">
+                                                        <%= projects[i + j].title %>
+                                                    </h5>
+                                                    <p class="card-text">
+                                                        <%= projects[i + j].description.substring(0, 100) %>...
+                                                    </p>
+                                                    <a href="/project/<%= projects[i + j]._id %>"
+                                                        class="btn btn-primary">View Project</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <% } %>
+                                </div>
+                            </div>
+                            <% isProjectActive=false; %>
+                                <% } %>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#projectCarousel"
+                    data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#projectCarousel"
+                    data-bs-slide="next">
                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
                     <span class="visually-hidden">Next</span>
                 </button>

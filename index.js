@@ -3,9 +3,11 @@ const path = require('path');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const Blog = require("./models/blogModel");
+const Project = require("./models/projectsModel");
 
 const userRoute = require("./routes/userRouter");
 const blogRoute = require("./routes/blogRouter");
+const projectRoute = require("./routes/projectRouter");
 
 
 const { checkForAuthenticationCookies } = require('./middleware/authentication');
@@ -23,13 +25,16 @@ app.use(express.static(path.resolve("./public")));
 
 app.use('/user', userRoute);
 app.use('/blog', blogRoute);
+app.use('/project', projectRoute);
 
 app.get('/', async (req, res) => {
     const allBlogs = await Blog.find({});
+    const allProject = await Project.find({});
     res.render('home', {
 
         user: req.user,
         blogs: allBlogs,
+        projects: allProject,
     });
 });
 

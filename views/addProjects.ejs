@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include("partials/head.ejs") %>
+        <title>Add New Project</title>
+</head>
+
+<body>
+    <%- include("partials/navbar.ejs") %>
+
+        <div class="container mt-3">
+            <h1 class="mb-4">Add New Project</h1>
+            <form method="post" action="/project" enctype="multipart/form-data">
+                <!-- Title -->
+                <div class="mb-3">
+                    <label for="title" class="form-label">Project Title</label>
+                    <input type="text" class="form-control" id="title" name="title" required>
+                </div>
+
+                <!-- Description -->
+                <div class="mb-3">
+                    <label for="description" class="form-label">Project Description</label>
+                    <textarea name="description" class="form-control" id="description" rows="5" required></textarea>
+                </div>
+
+                <!-- Start Date -->
+                <div class="mb-3">
+                    <label for="startDate" class="form-label">Start Date</label>
+                    <input type="date" class="form-control" id="startDate" name="startDate" required>
+                </div>
+
+                <!-- End Date -->
+                <div class="mb-3">
+                    <label for="endDate" class="form-label">End Date</label>
+                    <input type="date" class="form-control" id="endDate" name="endDate" required>
+                </div>
+
+                <!-- Progress -->
+                <div class="mb-3">
+                    <label for="progress" class="form-label">Progress (in percentage)</label>
+                    <input type="number" class="form-control" id="progress" name="progress" min="0" max="100" value="0"
+                        required>
+                </div>
+
+                <!-- Completed Checkbox -->
+                <div class="mb-3 form-check">
+                    <input type="checkbox" class="form-check-input" id="completed" name="completed">
+                    <label class="form-check-label" for="completed">Completed</label>
+                </div>
+
+                <!-- Image Uploads -->
+                <div class="mb-3">
+                    <label for="projectImage1" class="form-label">Project Image 1</label>
+                    <input type="file" class="form-control" id="projectImage1" name="projectImage1" required>
+                </div>
+                <div class="mb-3">
+                    <label for="projectImage2" class="form-label">Project Image 2</label>
+                    <input type="file" class="form-control" id="projectImage2" name="projectImage2" required>
+                </div>
+                <div class="mb-3">
+                    <label for="projectImage3" class="form-label">Project Image 3</label>
+                    <input type="file" class="form-control" id="projectImage3" name="projectImage3" required>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="mb-3">
+                    <button type="submit" class="btn btn-primary">Submit Project</button>
+                </div>
+            </form>
+        </div>
+
+        <%- include("partials/script.ejs") %>
+</body>
+
+</html>
