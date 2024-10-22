@@ -8,87 +8,99 @@
         <style>
             body {
                 font-family: 'Courier New', Courier, monospace;
-                background-color: #f8f9fa;
-                /* Light background for better contrast */
+                background-color: #121212;
+                /* Dark background */
+                color: #fff;
+                /* White text for contrast */
+                overflow-x: hidden;
+                /* Prevent horizontal scrolling */
+            }
+
+            .card-container {
+                perspective: 1000px;
+                margin: 20px;
             }
 
             .card {
-                border: none;
-                border-radius: 10px;
-                /* Rounded corners */
-                transition: transform 0.3s, box-shadow 0.3s;
-                /* Smooth transitions */
+                position: relative;
+                width: 400px;
+                /* Fixed width for uniformity */
+                height: 400px;
+                /* Fixed height for uniformity */
                 overflow: hidden;
-                /* Prevents overflow from image */
-                height: 200px;
-                /* Fixed height for cards */
-                max-width: 240px;
-                /* Set maximum width for cards */
-                margin: 0 auto;
-                /* Center cards */
+                border-radius: 15px;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+                transition: transform 0.3s ease;
+                background-color: rgba(255, 255, 255, 0.1);
+                /* Slightly transparent background */
+            }
+
+            .card img {
+                width: 100%;
+                height: 100%;
+                /* Ensure image takes full height */
+                object-fit: cover;
+                /* Maintain aspect ratio */
+                transition: transform 0.3s ease;
+            }
+
+            .caption {
+                position: absolute;
+                bottom: -100%;
+                /* Start hidden below the card */
+                left: 0;
+                right: 0;
+                background-color: rgba(0, 0, 0, 0.7);
+                color: #fff;
+                padding: 15px;
+                border-radius: 15px;
+                transition: bottom 0.3s ease;
+                text-align: center;
             }
 
             .card:hover {
-                transform: translateY(-5px);
-                /* Lift effect on hover */
-                box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-                /* Shadow effect */
+                transform: translateY(-10px) scale(1.05);
+                /* Lift and scale on hover */
+                box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+                /* Deeper shadow on hover */
             }
 
-            .card-title {
-                font-size: 1.25rem;
-                /* Increased title font size */
-                font-weight: bold;
-                /* Bold title */
-                color: #000 !important;
-                /* Ensuring title color is black */
+            .card:hover img {
+                transform: scale(1.1);
+                /* Scale the image on hover */
             }
 
-            .card-body {
-                padding: 10px;
-                /* Adjust padding for the card body */
+            .card:hover .caption {
+                bottom: 0;
+                /* Slide caption up */
+            }
+
+            .carousel-item {
                 display: flex;
-                /* Use flexbox to align items */
-                flex-direction: column;
-                /* Align items in a column */
-                justify-content: space-between;
-                /* Space between elements */
-                height: 100%;
-                /* Ensure body takes full height of card */
+                justify-content: center;
+                /* Center cards within the carousel */
+                padding: 20px;
+                /* Padding around the cards */
             }
 
-            .card-body p {
-                color: #333;
-                /* Dark text for better readability */
-                font-size: 0.85rem;
-                /* Slightly smaller body text */
-                margin-bottom: 1rem;
-                /* Space below the text */
-                overflow: hidden;
-                /* Hide overflowing text */
-                text-overflow: ellipsis;
-                /* Ellipsis for overflow */
-                white-space: nowrap;
-                /* Prevent line breaks */
+            /* Add an animation effect for the entire carousel */
+            .carousel {
+                animation: fadeIn 0.5s ease;
+                /* Fade-in effect for the carousel */
             }
 
-            .btn-primary {
-                background-color: #007bff;
-                /* Primary button color */
-                border: none;
-                /* No border */
-                transition: background-color 0.3s, transform 0.2s;
-                /* Button transitions */
-            }
+            @keyframes fadeIn {
+                from {
+                    opacity: 0;
+                    /* Start transparent */
+                }
 
-            .btn-primary:hover {
-                background-color: #0056b3;
-                /* Darker shade on hover */
-                transform: translateY(-2px);
-                /* Lift effect on hover */
+                to {
+                    opacity: 1;
+                    /* End fully visible */
+                }
             }
         </style>
-
 </head>
 
 <body>
@@ -96,30 +108,49 @@
         <%- include("partials/profilefield.ejs") %>
 
             <h1 class="text-center"
-                style="font-family: 'Roboto', sans-serif; font-weight: 700; color: #333; margin-bottom: 30px;">
+                style="font-family: 'Roboto', sans-serif; font-weight: 700; color: #fff; margin-bottom: 30px;">
                 My Daily BLOGS
             </h1>
 
-            <div class="container mt-3">
-                <div class="row row-cols-2 row-cols-md-3 g-0"> <!-- Adjust the columns for responsive layout -->
-                    <% blogs.forEach(blog=> { %>
-                        <div class="col d-flex justify-content-center"> <!-- Centering cards within their column -->
-                            <div class="card">
-                                <img src="<%= blog.coverImageURL %>" class="card-img-top" alt="Cover image"
-                                    style="height: 120px; object-fit: cover;"> <!-- Set image height -->
-                                <div class="card-body">
-                                    <h5 class="card-title">
-                                        <%= blog.title %>
-                                    </h5>
-                                    <p class="card-text">
-                                        <%= blog.body.substring(0, 100) %>... <!-- Display first 100 characters -->
-                                    </p>
-                                    <a href="/blog/<%= blog._id %>" class="btn btn-primary">Read More</a>
+            <div id="blogCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
+                <div class="carousel-inner">
+                    <% let isActive=true; %>
+                        <% for (let i=0; i < blogs.length; i +=3) { %>
+                            <div class="carousel-item <%= isActive ? 'active' : '' %>">
+                                <div class="row row-cols-1 row-cols-md-3 g-4">
+                                    <% for (let j=0; j < 3 && i + j < blogs.length; j++) { %>
+                                        <div class="col d-flex justify-content-center">
+                                            <div class="card-container">
+                                                <div class="card">
+                                                    <img src="<%= blogs[i + j].coverImageURL %>" class="card-img-top"
+                                                        alt="Cover image">
+                                                    <div class="caption">
+                                                        <h5 class="card-title">
+                                                            <%= blogs[i + j].title %>
+                                                        </h5>
+                                                        <p class="card-text">
+                                                            <%= blogs[i + j].body.substring(0, 100) %>...
+                                                        </p>
+                                                        <a href="/blog/<%= blogs[i + j]._id %>"
+                                                            class="btn btn-primary">Read More</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <% } %>
                                 </div>
                             </div>
-                        </div>
-                        <% }) %>
+                            <% isActive=false; %>
+                                <% } %>
                 </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#blogCarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#blogCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
             </div>
 
             <%- include("partials/script.ejs") %>
