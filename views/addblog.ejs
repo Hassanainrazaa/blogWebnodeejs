@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include("partials/head.ejs") %> <!-- Removed ./ for path correction -->
+        <title>Add Blog</title>
+</head>
+
+<body>
+    <%- include("partials/navbar.ejs") %> <!-- Removed ./ for path correction -->
+
+        <div class="container mt-3">
+            <form method="post" action="/blog" enctype="multipart/form-data">
+                <div class="mb-3">
+                    <label for="coverImage" class="form-label">Cover Image</label>
+                    <input type="file" class="form-control" id="coverImage" name="coverImage"
+                        aria-describedby="coverImage">
+                </div>
+                <div class="mb-3">
+                    <label for="title" class="form-label">Title</label>
+                    <input type="title" class="form-control" id="title" name="title">
+                </div>
+                <div class="mb-3">
+                    <label for="body">Body</label>
+                    <textarea name="body" class="form-control" id="body" placeholder="Leave a description here"
+                        id="floatingTextarea"></textarea>
+                </div>
+                <div class="mb-3">
+                    <button class="btn btn-primary">Submit</button>
+                </div>
+
+            </form>
+        </div>
+
+
+        <%- include("partials/script.ejs") %> <!-- Removed ./ for path correction -->
+</body>
+
+</html>

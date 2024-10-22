@@ -1,0 +1,101 @@
+<%- include("./head.ejs") %>
+    <title>Blogify</title>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">Blogify</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+                aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav me-auto"> <!-- Aligns items to the left -->
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/">
+                            <i class="fas fa-home"></i> Home
+                        </a>
+                    </li>
+                    <% if (locals.user && locals.user.role==="admin" ) { %>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                <i class="fas fa-cog"></i> Admin
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end bg-dark">
+                                <li>
+                                    <a class="dropdown-item text-white" href="/blog/add-new">
+                                        <i class="fas fa-plus-circle"></i> Add Blog
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <% } %>
+                </ul>
+                <ul class="navbar-nav ms-auto"> <!-- Aligns items to the right -->
+                    <% if (locals.user) { %>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                User Info
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end bg-dark">
+                                <li>
+                                    <a class="dropdown-item text-white" href="/user/logout">Log Out</a>
+                                </li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li>
+                                    <a class="dropdown-item text-white" href="#" id="toggle-theme">Toggle Dark/Light
+                                        Mode</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <% } else { %>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/user/signup">
+                                    <i class="fas fa-user-plus"></i> Create Account
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/user/signin">
+                                    <i class="fas fa-sign-in-alt"></i> Sign In
+                                </a>
+                            </li>
+                            <% } %>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <% if (locals.error) { %>
+        <div class="alert alert-danger" role="alert">
+            <%= locals.error %>
+        </div>
+        <% } %>
+
+            <style>
+                .navbar-nav .nav-link {
+                    transition: background-color 0.3s, color 0.3s;
+                    /* Smooth transition for hover effects */
+                }
+
+                .navbar-nav .nav-link:hover {
+                    background-color: rgba(255, 255, 255, 0.1);
+                    /* Light hover effect */
+                    color: #f8f9fa;
+                    /* Text color on hover */
+                }
+
+                .dropdown-item:hover {
+                    background-color: rgba(255, 255, 255, 0.1);
+                    /* Light hover effect for dropdown items */
+                    color: #f8f9fa;
+                    /* Text color on hover */
+                }
+
+                .dropdown-menu {
+                    border-radius: 0;
+                    /* Square edges for dropdown */
+                }
+            </style>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include("../partials/head.ejs") %> <!-- Adjust the path if needed -->
+        <title>Profile</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+        <style>
+            body {
+                background: url('https://your-background-image-url.com') no-repeat center center fixed;
+                background-size: cover;
+                color: #fff;
+                font-family: Arial, sans-serif;
+            }
+
+            .profile-intro {
+                height: 500px;
+                display: flex;
+                /* Use flexbox for layout */
+                align-items: center;
+                /* Center items vertically */
+                justify-content: space-between;
+                /* Space between text and image */
+                padding: 50px 20px;
+                background: rgba(0, 0, 0, 0.5);
+                width: 100%;
+                margin: 0;
+            }
+
+            .text-section {
+                flex: 1;
+                /* Allow text section to take available space */
+                margin-right: 20px;
+                /* Space between text and image */
+            }
+
+            .profile-image {
+                width: 150px;
+                /* Adjust width of the image */
+                height: 150px;
+                /* Adjust height of the image */
+                border-radius: 50%;
+                /* Make image circular */
+                object-fit: cover;
+                /* Ensure the image covers the frame */
+                border: 3px solid #fff;
+                /* Optional: white border around the image */
+            }
+
+            .social-icons {
+                margin-top: 20px;
+            }
+
+            .social-icons a {
+                margin: 0 15px;
+                color: #fff;
+                font-size: 24px;
+                transition: color 0.3s;
+            }
+
+            .social-icons a:hover {
+                color: #00aced;
+                /* Hover color */
+            }
+
+            h1,
+            h2 {
+                margin-bottom: 15px;
+            }
+        </style>
+</head>
+
+<body>
+
+    <div class="profile-intro">
+        <div class="text-section">
+            <h1>Welcome to My Profile</h1>
+            <h2>Your Introduction Goes Here</h2>
+            <p>
+                Brief intro about yourself, your interests, and your work in technology.
+                Feel free to customize this text!
+            </p>
+            <div class="social-icons">
+                <a href="https://facebook.com" target="_blank" title="Facebook"><i class="fab fa-facebook"></i></a>
+                <a href="https://twitter.com" target="_blank" title="Twitter"><i class="fab fa-twitter"></i></a>
+                <a href="https://linkedin.com" target="_blank" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                <a href="https://github.com" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>
+                <a href="https://instagram.com" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+            </div>
+        </div>
+        <img src="https://i.postimg.cc/JnRtLWWL/460622072-2208479119529236-7053530482087649497-n.jpg"
+            alt="Profile Image" class="profile-image">
+        <!-- Add your profile image URL here -->
+    </div>
+
+    <%- include("../partials/script.ejs") %>
+</body>
+
+</html>

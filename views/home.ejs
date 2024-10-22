@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include("partials/head.ejs") %>
+        <title>Homepage</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+        <style>
+            body {
+                font-family: 'Courier New', Courier, monospace;
+                background-color: #f8f9fa;
+                /* Light background for better contrast */
+            }
+
+            .card {
+                border: none;
+                border-radius: 10px;
+                /* Rounded corners */
+                transition: transform 0.3s, box-shadow 0.3s;
+                /* Smooth transitions */
+                overflow: hidden;
+                /* Prevents overflow from image */
+                height: 200px;
+                /* Fixed height for cards */
+                max-width: 240px;
+                /* Set maximum width for cards */
+                margin: 0 auto;
+                /* Center cards */
+            }
+
+            .card:hover {
+                transform: translateY(-5px);
+                /* Lift effect on hover */
+                box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+                /* Shadow effect */
+            }
+
+            .card-title {
+                font-size: 1.25rem;
+                /* Increased title font size */
+                font-weight: bold;
+                /* Bold title */
+                color: #000 !important;
+                /* Ensuring title color is black */
+            }
+
+            .card-body {
+                padding: 10px;
+                /* Adjust padding for the card body */
+                display: flex;
+                /* Use flexbox to align items */
+                flex-direction: column;
+                /* Align items in a column */
+                justify-content: space-between;
+                /* Space between elements */
+                height: 100%;
+                /* Ensure body takes full height of card */
+            }
+
+            .card-body p {
+                color: #333;
+                /* Dark text for better readability */
+                font-size: 0.85rem;
+                /* Slightly smaller body text */
+                margin-bottom: 1rem;
+                /* Space below the text */
+                overflow: hidden;
+                /* Hide overflowing text */
+                text-overflow: ellipsis;
+                /* Ellipsis for overflow */
+                white-space: nowrap;
+                /* Prevent line breaks */
+            }
+
+            .btn-primary {
+                background-color: #007bff;
+                /* Primary button color */
+                border: none;
+                /* No border */
+                transition: background-color 0.3s, transform 0.2s;
+                /* Button transitions */
+            }
+
+            .btn-primary:hover {
+                background-color: #0056b3;
+                /* Darker shade on hover */
+                transform: translateY(-2px);
+                /* Lift effect on hover */
+            }
+        </style>
+
+</head>
+
+<body>
+    <%- include("partials/navbar.ejs") %>
+        <%- include("partials/profilefield.ejs") %>
+
+            <h1 class="text-center"
+                style="font-family: 'Roboto', sans-serif; font-weight: 700; color: #333; margin-bottom: 30px;">
+                My Daily BLOGS
+            </h1>
+
+            <div class="container mt-3">
+                <div class="row row-cols-2 row-cols-md-3 g-0"> <!-- Adjust the columns for responsive layout -->
+                    <% blogs.forEach(blog=> { %>
+                        <div class="col d-flex justify-content-center"> <!-- Centering cards within their column -->
+                            <div class="card">
+                                <img src="<%= blog.coverImageURL %>" class="card-img-top" alt="Cover image"
+                                    style="height: 120px; object-fit: cover;"> <!-- Set image height -->
+                                <div class="card-body">
+                                    <h5 class="card-title">
+                                        <%= blog.title %>
+                                    </h5>
+                                    <p class="card-text">
+                                        <%= blog.body.substring(0, 100) %>... <!-- Display first 100 characters -->
+                                    </p>
+                                    <a href="/blog/<%= blog._id %>" class="btn btn-primary">Read More</a>
+                                </div>
+                            </div>
+                        </div>
+                        <% }) %>
+                </div>
+            </div>
+
+            <%- include("partials/script.ejs") %>
+</body>
+
+</html>
