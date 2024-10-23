@@ -4,9 +4,10 @@ const Project = require("../models/projectsModel");
 const multer = require("multer");
 const path = require("path");
 
+// Multer storage configuration
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, path.resolve(`./public/uploads/`));
+        cb(null, path.resolve(`./public/uploads/`)); // Make sure this matches the public directory
     },
     filename: function (req, file, cb) {
         const uniqueSuffix = Date.now() + `_` + file.originalname;
@@ -52,9 +53,9 @@ router.post("/", upload.fields([
             endDate,
             progress,
             completed: completed ? true : false,
-            projectImage1: `/uploads/projects/${req.files['projectImage1'][0].filename}`,
-            projectImage2: `/uploads/projects/${req.files['projectImage2'][0].filename}`,
-            projectImage3: `/uploads/projects/${req.files['projectImage3'][0].filename}`,
+            projectImage1: `/uploads/${req.files['projectImage1'][0].filename}`,
+            projectImage2: `/uploads/${req.files['projectImage2'][0].filename}`,
+            projectImage3: `/uploads/${req.files['projectImage3'][0].filename}`,
             createdBy: req.user._id
         });
         return res.redirect(`/`); // Redirect to the project's page
