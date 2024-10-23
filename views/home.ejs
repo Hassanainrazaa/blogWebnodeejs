@@ -14,72 +14,45 @@
             }
 
             .card-container {
-                perspective: 1000px;
                 margin: 20px;
             }
 
             .card {
-                position: relative;
-                width: 400px;
-                height: 400px;
-                overflow: hidden;
+                width: 100%;
                 border-radius: 15px;
-                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-                transition: transform 0.3s ease;
-                background-color: rgba(255, 255, 255, 0.1);
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+                background-color: #fff;
+                /* Solid background to fix the white patches issue */
+                transition: box-shadow 0.3s ease;
             }
 
             .card img {
-                width: 100%;
-                height: 100%;
+                border-top-left-radius: 15px;
+                border-top-right-radius: 15px;
+                height: 200px;
                 object-fit: cover;
-                transition: transform 0.3s ease;
             }
 
             .caption {
-                position: absolute;
-                bottom: -100%;
-                left: 0;
-                right: 0;
-                background-color: rgba(0, 0, 0, 0.7);
-                color: #fff;
                 padding: 15px;
-                border-radius: 15px;
-                transition: bottom 0.3s ease;
                 text-align: center;
             }
 
+            .caption .card-title,
+            .caption .card-text {
+                color: #000 !important;
+                /* Ensures the title and text are black */
+            }
+
             .card:hover {
-                transform: translateY(-10px) scale(1.05);
-                box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
             }
 
-            .card:hover img {
-                transform: scale(1.1);
-            }
-
-            .card:hover .caption {
-                bottom: 0;
-            }
-
-            .carousel-item {
-                display: flex;
-                justify-content: center;
-                padding: 20px;
-            }
-
-            .carousel {
-                animation: fadeIn 0.5s ease;
-            }
-
-            @keyframes fadeIn {
-                from {
-                    opacity: 0;
-                }
-
-                to {
-                    opacity: 1;
-                }
+            .btn-danger {
+                position: absolute;
+                top: 10px;
+                right: 10px;
+                z-index: 10;
             }
         </style>
 </head>
@@ -94,45 +67,38 @@
                 My Daily BLOGS
             </h1>
 
-            <div id="blogCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
-                <div class="carousel-inner">
-                    <% let isActive=true; %>
-                        <% for (let i=0; i < blogs.length; i +=3) { %>
-                            <div class="carousel-item <%= isActive ? 'active' : '' %>">
-                                <div class="row row-cols-1 row-cols-md-3 g-4">
-                                    <% for (let j=0; j < 3 && i + j < blogs.length; j++) { %>
-                                        <div class="col d-flex justify-content-center">
-                                            <div class="card-container">
-                                                <div class="card">
-                                                    <img src="<%= blogs[i + j].coverImageURL %>" class="card-img-top"
-                                                        alt="Cover image">
-                                                    <div class="caption">
-                                                        <h5 class="card-title">
-                                                            <%= blogs[i + j].title %>
-                                                        </h5>
-                                                        <p class="card-text">
-                                                            <%= blogs[i + j].body.substring(0, 100) %>...
-                                                        </p>
-                                                        <a href="/blog/<%= blogs[i + j]._id %>"
-                                                            class="btn btn-primary">Read More</a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+            <div class="container">
+                <div class="row">
+                    <% for (let i=0; i < blogs.length; i++) { %>
+                        <div class="col-md-4 d-flex justify-content-center">
+                            <div class="card-container">
+                                <div class="card" style="position: relative;">
+                                    <% if (locals.user && locals.user.role==="admin" ) { %>
+                                        <form action="/blog/<%= blogs[i]._id %>?_method=DELETE" method="POST"
+                                            class="btn-delete">
+                                            <button type="submit" class="btn btn-danger btn-sm">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </form>
                                         <% } %>
+
+                                            <img src="<%= blogs[i].coverImageURL %>" class="card-img-top"
+                                                alt="Cover image">
+                                            <div class="caption">
+                                                <h5 class="card-title">
+                                                    <%= blogs[i].title %>
+                                                </h5>
+                                                <p class="card-text">
+                                                    <%= blogs[i].body.substring(0, 100) %>...
+                                                </p>
+                                                <a href="/blog/<%= blogs[i]._id %>" class="btn btn-primary">Read
+                                                    More</a>
+                                            </div>
                                 </div>
                             </div>
-                            <% isActive=false; %>
-                                <% } %>
+                        </div>
+                        <% } %>
                 </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#blogCarousel" data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Previous</span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#blogCarousel" data-bs-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Next</span>
-                </button>
             </div>
 
             <!-- Projects Section -->
@@ -141,45 +107,37 @@
                 My Projects
             </h1>
 
-            <div id="projectCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
-                <div class="carousel-inner">
-                    <% let isProjectActive=true; %>
-                        <% for (let i=0; i < projects.length; i +=3) { %>
-                            <div class="carousel-item <%= isProjectActive ? 'active' : '' %>">
-                                <div class="d-flex justify-content-center">
-                                    <% for (let j=0; j < 3 && i + j < projects.length; j++) { %>
-                                        <div class="card-container mx-3">
-                                            <div class="card" style="width: 350px; height: 350px;">
-                                                <img src="<%= projects[i + j].projectImage1 %>" class="card-img-top"
-                                                    alt="Project image">
-                                                <div class="caption">
-                                                    <h5 class="card-title">
-                                                        <%= projects[i + j].title %>
-                                                    </h5>
-                                                    <p class="card-text">
-                                                        <%= projects[i + j].description.substring(0, 100) %>...
-                                                    </p>
-                                                    <a href="/project/<%= projects[i + j]._id %>"
-                                                        class="btn btn-primary">View Project</a>
-                                                </div>
-                                            </div>
-                                        </div>
+            <div class="container">
+                <div class="row">
+                    <% for (let i=0; i < projects.length; i++) { %>
+                        <div class="col-md-4 d-flex justify-content-center">
+                            <div class="card-container">
+                                <div class="card">
+                                    <% if (locals.user && locals.user.role==="admin" ) { %>
+                                        <form action="/project/<%= projects[i]._id %>?_method=DELETE" method="POST"
+                                            class="btn-delete">
+                                            <button type="submit" class="btn btn-danger btn-sm">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </form>
                                         <% } %>
+                                            <img src="<%= projects[i].projectImage2 %>" class="card-img-top"
+                                                alt="Project image">
+                                            <div class="caption">
+                                                <h5 class="card-title">
+                                                    <%= projects[i].title %>
+                                                </h5>
+                                                <p class="card-text">
+                                                    <%= projects[i].description.substring(0, 100) %>...
+                                                </p>
+                                                <a href="/project/<%= projects[i]._id %>" class="btn btn-primary">View
+                                                    Project</a>
+                                            </div>
                                 </div>
                             </div>
-                            <% isProjectActive=false; %>
-                                <% } %>
+                        </div>
+                        <% } %>
                 </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#projectCarousel"
-                    data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Previous</span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#projectCarousel"
-                    data-bs-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Next</span>
-                </button>
             </div>
 
             <%- include("partials/script.ejs") %>

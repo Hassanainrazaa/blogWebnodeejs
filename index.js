@@ -4,6 +4,8 @@ const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const Blog = require("./models/blogModel");
 const Project = require("./models/projectsModel");
+const methodOverride = require('method-override');
+
 
 const userRoute = require("./routes/userRouter");
 const blogRoute = require("./routes/blogRouter");
@@ -21,6 +23,8 @@ app.set('views', path.resolve("./views"));
 app.use(express.urlencoded({ extended: false }));
 app.use(checkForAuthenticationCookies("token"));
 app.use(express.static(path.resolve("./public")));
+app.use(express.static(path.resolve("./projectImages")));
+app.use(methodOverride('_method'));
 
 
 app.use('/user', userRoute);

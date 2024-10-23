@@ -4,7 +4,6 @@ const Project = require("../models/projectsModel");
 const multer = require("multer");
 const path = require("path");
 
-// Multer storage configuration
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, path.resolve(`./public/uploads/`));
@@ -17,19 +16,11 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-
 router.get("/add-new", (req, res) => {
     return res.render("addProjects", {
         user: req.user,
     });
 });
-
-
-// router.get("/", (req, res) => {
-//     console.log(req.body);
-//     return res.redirect("/");
-// });
-
 
 router.post("/", upload.fields([
     { name: 'projectImage1', maxCount: 1 },
@@ -42,13 +33,13 @@ router.post("/", upload.fields([
     if (!req.files || !req.files['projectImage1'] || !req.files['projectImage2'] || !req.files['projectImage3']) {
         return res.render("addProject", {
             error: "All three project images are required.",
-            user: req.user,   // Pass user for re-rendering the form correctly
-            title,            // Pass back the title if it was already filled
-            description,      // Pass back the description if it was already filled
-            startDate,        // Pass back the startDate if filled
-            endDate,          // Pass back the endDate if filled
-            progress,         // Pass back progress if filled
-            completed         // Pass back completed status if filled
+            user: req.user,
+            title,
+            description,
+            startDate,
+            endDate,
+            progress,
+            completed
         });
     }
 
@@ -66,13 +57,13 @@ router.post("/", upload.fields([
             projectImage3: `/uploads/projects/${req.files['projectImage3'][0].filename}`,
             createdBy: req.user._id
         });
-        return res.redirect(`/`);  // Redirect to the project's page
+        return res.redirect(`/`); // Redirect to the project's page
     } catch (error) {
         console.error(error);
         return res.render("addProject", {
             error: "Error creating project. Please try again.",
-            user: req.user,    // Pass user back to re-render the form
-            title,             // Pass back form values to avoid user re-typing
+            user: req.user,
+            title,
             description,
             startDate,
             endDate,
@@ -82,5 +73,22 @@ router.post("/", upload.fields([
     }
 });
 
+router.delete('/:id', async (req, res) => {
+    try {
+        await Project.findByIdAndDelete(req.params.id);
+        res.redirect('/'); // Redirect to homepage after deletion
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Server Error');
+    }
+});
+
+router.get("/:id", async (req, res) => {
+    const project = await Project.findById(req.params.id).populate('createdBy');
+    return res.render("project", {
+        user: req.user,
+        project,
+    });
+});
 
 module.exports = router;

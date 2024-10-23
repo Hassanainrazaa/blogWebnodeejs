@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include("partials/head.ejs") %> <!-- Including the head partial -->
+        <title>
+            <%= project.title %>
+        </title>
+</head>
+
+<body class="text-wrap"> <!-- Apply text-wrap to the body to ensure wrapping -->
+    <%- include("partials/navbar.ejs") %> <!-- Including the navbar partial -->
+
+        <div class="container my-5">
+            <!-- Project title -->
+            <h1 class="display-4 text-center mb-4">
+                <%= project.title %>
+            </h1>
+
+            <!-- Project Images -->
+            <div class="project-images text-center mb-4">
+                <img src="<%= project.projectImage1 %>" alt="Project Image 1" class="img-fluid">
+                <img src="<%= project.projectImage2 %>" alt="Project Image 2" class="img-fluid">
+                <img src="<%= project.projectImage3 %>" alt="Project Image 3" class="img-fluid">
+            </div>
+
+            <!-- Project Description -->
+            <div class="project-description">
+                <p>
+                    <%= project.description %>
+                </p>
+            </div>
+
+            <!-- Project Info -->
+            <div class="project-info">
+                <p><strong>Start Date:</strong>
+                    <%= new Date(project.startDate).toLocaleDateString() %>
+                </p>
+                <p><strong>End Date:</strong>
+                    <%= new Date(project.endDate).toLocaleDateString() %>
+                </p>
+                <p><strong>Progress:</strong>
+                    <%= project.progress %>%
+                </p>
+                <p><strong>Completed:</strong>
+                    <%= project.completed ? 'Yes' : 'No' %>
+                </p>
+            </div>
+        </div>
+
+        <%- include("partials/script.ejs") %> <!-- Including any additional scripts -->
+</body>
+
+</html>

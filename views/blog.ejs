@@ -42,9 +42,8 @@
 
                 <h2>Comments (<%= comments.length %>)</h2>
 
-
                 <!-- Show comment form if the user is logged in -->
-                <% if(locals.user) { %>
+                <% if (locals.user) { %>
                     <form action="/blog/comment/<%= blog._id %>" method="post" class="mb-4">
                         <div class="mb-3">
                             <input type="text" class="form-control" name="content" placeholder="Enter Your Comment">
@@ -55,23 +54,23 @@
 
                         <!-- Display Comments -->
                         <div class="comments-list">
-                            <% comments.forEach(comment=> { %>
+                            <% for (let i=0; i < comments.length; i++) { %>
                                 <div class="d-flex align-items-start mb-3 border-bottom pb-2">
-                                    <img src="<%= comment.createdBy.profileImageURL %>" width="40px"
+                                    <img src="<%= comments[i].createdBy.profileImageURL %>" width="40px"
                                         class="rounded-circle me-2" alt="Commenter Image">
                                     <div>
                                         <strong>
-                                            <%= comment.createdBy.fullname %>
+                                            <%= comments[i].createdBy.fullname %>
                                         </strong>
                                         <p class="mb-1">
-                                            <%= comment.content %>
+                                            <%= comments[i].content %>
                                         </p>
                                         <small class="text-muted">
-                                            <%= new Date(comment.createdAt).toLocaleString() %>
+                                            <%= new Date(comments[i].createdAt).toLocaleString() %>
                                         </small> <!-- Show comment date -->
                                     </div>
                                 </div>
-                                <% }); %>
+                                <% } %>
                         </div>
             </div>
         </div>

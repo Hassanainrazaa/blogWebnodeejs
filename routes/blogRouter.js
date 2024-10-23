@@ -1,41 +1,4 @@
-// const { Router } = require("express");
-// const Blog = require("../models/blogModel");
-// const router = Router();
-// const multer = require("multer");
-// const path = require("path");
 
-
-// const storage = multer.diskStorage({
-//     destination: function (req, file, cb) {
-//         cb(null, path.resolve(`./public/uploads/`));
-//     },
-//     filename: function (req, file, cb) {
-//         const uniquesuffix = Date.now() + `_` + file.originalname;
-//         cb(null, uniquesuffix);
-//     },
-// });
-
-// const upload = multer({ storage: storage });
-// router.get("/add-new", (req, res) => {
-//     return res.render("addBlog", {
-//         user: req.user,
-//     });
-// });
-
-
-// router.post("/", upload.single("coverImage"), async (req, res) => {
-//     const { title, body } = req.body;
-//     const blog = await Blog.create({
-//         body,
-//         title,
-//         createdBy: req.user._id,
-//         coverImage: `/uploads/${req.file.filename}`,
-
-//     });
-//     return res.redirect(`/blog/${blog._id}`);
-// });
-
-// module.exports = router;
 
 
 const { Router } = require("express");
@@ -108,6 +71,19 @@ router.get("/:id", async (req, res) => {
         comments, // Now this will correctly refer to the comments variable
     });
 });
+
+
+router.delete('/:id', async (req, res) => {
+    try {
+        await Blog.findByIdAndDelete(req.params.id);
+        res.redirect('/'); // Redirect to homepage or appropriate page after deletion
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Server Error');
+    }
+});
+
+
 
 
 
